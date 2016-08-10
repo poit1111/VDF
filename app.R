@@ -4,10 +4,6 @@ library(RJDBC,quietly=T)
 library(dygraphs,quietly=T)
 library(zoo)
 
-loginOracle <- function(){
-  drv <- JDBC("oracle.jdbc.OracleDriver",classPath="C:/Oracle11g/product/11.2.0/client_1/jdbc/lib/ojdbc5.jar", " ")
-  con <<- dbConnect(drv, "jdbc:oracle:thin:@//cvg-bodsdbd01.lenscrafters.com:1521/bodsdev", "lclabor","LCLAB0R1")}
-
 loginOracle()
 
 processData <- function(date){
