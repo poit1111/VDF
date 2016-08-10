@@ -2,9 +2,9 @@ library(shiny)
 library(forecast,quietly=T)
 library(RJDBC,quietly=T)
 
-loginOracle <- function(account,password){
+loginOracle <- function(server,account,password){
   drv <- JDBC("oracle.jdbc.OracleDriver",classPath="C:/Oracle11g/product/11.2.0/client_1/jdbc/lib/ojdbc5.jar", " ")
-  con <<- dbConnect(drv, "jdbc:oracle:thin:@//cvg-bodsdbd01.lenscrafters.com:1521/bodsdev", account,password)}
+  con <<- dbConnect(drv, paste("jdbc:oracle:thin:@//",server),account,password)}
 
 Logged = FALSE;
 
@@ -12,6 +12,7 @@ ui1 <- function(){
   tagList(
     div(id = "login",
         wellPanel(titlePanel(title="Oralce Database Login",windowTitle="Oralce Database Login"),
+                  textInput("serverName", "Server"),
                   textInput("userName", "Username"),
                   passwordInput("passwd", "Password"),
                   br(),actionButton("Login", "Log in"))),
@@ -60,7 +61,7 @@ server1 = function(input, output,session) {
           Username <- isolate(input$userName)
           Password <- isolate(input$passwd)
           if(exists("con"))rm("con",pos = ".GlobalEnv")
-          try(loginOracle(Username,Password),silent = T)
+          try(loginOracle(serverName, Username,Password),silent = T)
           ifelse(exists("con"),USER$Logged <- TRUE,USER$Logged <- FALSE)
             } 
           }
